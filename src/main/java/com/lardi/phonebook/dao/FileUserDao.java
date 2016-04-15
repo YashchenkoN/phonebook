@@ -2,8 +2,11 @@ package com.lardi.phonebook.dao;
 
 import com.lardi.phonebook.common.UserRecord;
 import com.lardi.phonebook.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -13,22 +16,36 @@ import java.io.RandomAccessFile;
  */
 public class FileUserDao implements UserDao, DisposableBean {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUserDao.class);
+
     private RandomAccessFile file;
+    private Long maxId;
 
     public FileUserDao(String fileName) {
         try {
+            File f = new File(fileName);
+            if (f.exists()) {
+                f.delete();
+            }
             file = new RandomAccessFile(fileName, "rw");
-        } catch (FileNotFoundException e) {}
+            maxId = file.length() / UserRecord.SIZE;
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage());
+        }
     }
 
     @Override
     public User create(User user) {
+        maxId = maxId + 1L;
+        user.setId(maxId);
         if (read(user.getId()) == null) {
             try {
                 file.seek((user.getId() - 1L) * UserRecord.SIZE);
                 new UserRecord(user).writeToFile(file);
             } catch (IOException e) {
-                e.printStackTrace();
+                maxId = maxId - 1L;
+                LOGGER.error(e.getLocalizedMessage());
+                return null;
             }
         }
         return user;
@@ -42,6 +59,7 @@ public class FileUserDao implements UserDao, DisposableBean {
             record.readFromFile(file);
             return record;
         } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage());
         }
         return null;
     }
@@ -59,6 +77,7 @@ public class FileUserDao implements UserDao, DisposableBean {
                 file.seek((user.getId() - 1L) * UserRecord.SIZE);
                 new UserRecord(user).writeToFile(file);
             } catch (IOException e) {
+                LOGGER.error(e.getLocalizedMessage());
             }
         }
 
@@ -73,6 +92,7 @@ public class FileUserDao implements UserDao, DisposableBean {
                 UserRecord record = new UserRecord();
                 record.writeToFile(file);
             } catch (IOException e) {
+                LOGGER.error(e.getLocalizedMessage());
             }
         }
     }
