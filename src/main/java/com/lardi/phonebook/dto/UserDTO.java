@@ -1,14 +1,13 @@
-package com.lardi.phonebook.entity;
+package com.lardi.phonebook.dto;
 
 /**
  * @author Nikolay Yashchenko
  */
-public class User {
+public class UserDTO {
     private Long id;
     private String name;
     private String login;
     private String password;
-    private Role role;
 
     public Long getId() {
         return id;
@@ -40,13 +39,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

@@ -1,14 +1,12 @@
 package com.lardi.phonebook.dao;
 
+import com.lardi.phonebook.entity.Role;
 import com.lardi.phonebook.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +24,7 @@ public class SQLUserDao implements UserDao {
             user.setName(rs.getString("name"));
             user.setLogin(rs.getString("login"));
             user.setPassword(rs.getString("password"));
+            user.setRole(Role.valueOf(rs.getString("role")));
             return user;
         }
         return null;
@@ -44,6 +43,7 @@ public class SQLUserDao implements UserDao {
         parameters.put("name", user.getName());
         parameters.put("login", user.getLogin());
         parameters.put("password", user.getPassword());
+        parameters.put("role", user.getRole().name());
         Number key = simpleJdbcInsert.executeAndReturnKey(parameters);
 
         user.setId(key.longValue());
