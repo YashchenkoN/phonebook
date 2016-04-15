@@ -3,11 +3,14 @@ package com.lardi.phonebook.dao;
 import com.lardi.phonebook.entity.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Nikolay Yashchenko
@@ -34,19 +37,16 @@ public class SQLUserDao implements UserDao {
 
     @Override
     public User create(User user) {
-        String sql = "INSERT INTO users (name, login, password) VALUES (?, ?, ?, ?)";
-//        jdbcTemplate.update(sql, user.getName(), user.getLogin(), user.getPassword());
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("users")
+                .usingGeneratedKeyColumns("id");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("name", user.getName());
+        parameters.put("login", user.getLogin());
+        parameters.put("password", user.getPassword());
+        Number key = simpleJdbcInsert.executeAndReturnKey(parameters);
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getLogin());
-            ps.setString(3, user.getPassword());
-            return ps;
-        }, keyHolder);
-
-        user.setId(keyHolder.getKey().longValue());
+        user.setId(key.longValue());
 
         return user;
     }
