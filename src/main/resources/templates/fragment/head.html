@@ -1,0 +1,30 @@
+<th:block th:fragment="head(title)" xmlns:th="http://www.thymeleaf.org">
+
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title th:text="${title}">Simple Sidebar - Start Bootstrap Template</title>
+
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen">
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+    <script th:src="@{/js/jquery.js}"></script>
+
+    <!--<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/css/bootstrap.min.css"-->
+    <!--th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"-->
+    <!--rel="stylesheet" media="screen" />-->
+    <!--<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/js/bootstrap.min.js"-->
+    <!--th:href="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"-->
+    <!--rel="stylesheet" media="screen" />-->
+    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/2.2.1/jquery.min.js"-->
+    <!--th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>-->
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</th:block>

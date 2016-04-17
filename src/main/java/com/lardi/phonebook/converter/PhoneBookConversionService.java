@@ -24,6 +24,7 @@ public class PhoneBookConversionService extends ConversionServiceFactoryBean {
 
     public PhoneBookConversionService() {
         Set<Converter> converters = new HashSet<>();
+        converters.add(new UserEntityToDTOConverter());
         setConverters(converters);
     }
 

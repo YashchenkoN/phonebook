@@ -1,78 +1,49 @@
 package com.lardi.phonebook.dao;
 
-import com.lardi.phonebook.entity.Role;
+import com.lardi.phonebook.common.MySQL;
 import com.lardi.phonebook.entity.User;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author Nikolay Yashchenko
  */
+@Repository
+@MySQL
 public class SQLUserDao implements UserDao {
 
-    private JdbcTemplate jdbcTemplate;
-
-    private ResultSetExtractor<User> readExtractor = rs -> {
-        if (rs.next()) {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setName(rs.getString("name"));
-            user.setLogin(rs.getString("login"));
-            user.setPassword(rs.getString("password"));
-            user.setRole(Role.valueOf(rs.getString("role")));
-            return user;
-        }
-        return null;
-    };
-
-    public SQLUserDao(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public User create(User user) {
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("users")
-                .usingGeneratedKeyColumns("id");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("name", user.getName());
-        parameters.put("login", user.getLogin());
-        parameters.put("password", user.getPassword());
-        parameters.put("role", user.getRole().name());
-        Number key = simpleJdbcInsert.executeAndReturnKey(parameters);
-
-        user.setId(key.longValue());
-
+        entityManager.persist(user);
         return user;
     }
 
     @Override
     public User read(Long id) {
-        String sql = "SELECT * FROM users where id = ?";
-        return jdbcTemplate.query(sql, new Object[] { id }, readExtractor);
+        return entityManager.find(User.class, id);
     }
 
     @Override
     public User read(String login) {
-        String sql = "SELECT * FROM users where login = ?";
-        return jdbcTemplate.query(sql, new Object[] { login }, readExtractor);
+        return (User) entityManager.unwrap(Session.class).createCriteria(User.class)
+                .add(Restrictions.eq("login", login))
+                .uniqueResult();
     }
 
     @Override
     public User update(User user) {
-        String sql = "UPDATE users SET name = ?, login = ?, password = ? WHERE id = ?";
-        jdbcTemplate.update(sql, user.getName(), user.getLogin(), user.getPassword(), user.getId());
-        return user;
+        return entityManager.merge(user);
     }
 
     @Override
     public void delete(User user) {
-        String sql = "DELETE FROM users where id = ?";
-        jdbcTemplate.update(sql, user.getId());
+        entityManager.remove(user);
     }
 }

@@ -1,8 +1,6 @@
 package com.lardi.phonebook.config;
 
-import com.lardi.phonebook.dao.FileUserDao;
-import com.lardi.phonebook.dao.SQLUserDao;
-import com.lardi.phonebook.dao.UserDao;
+import com.lardi.phonebook.common.MySQL;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +21,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
+@MySQL
 public class DBConfig {
 
     @Value("${dataSource.driverClassName}")
@@ -58,7 +57,7 @@ public class DBConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "create");
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;
@@ -69,14 +68,5 @@ public class DBConfig {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(configureEntityManagerFactory().getObject());
         return jpaTransactionManager;
-    }
-
-    @Bean
-    public UserDao userDao() {
-        if ("sql".equals(dbType)) {
-            return new SQLUserDao(dataSource());
-        } else {
-            return new FileUserDao(fileName);
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.lardi.phonebook.web.rest;
 
+import com.lardi.phonebook.dto.BaseResponse;
 import com.lardi.phonebook.dto.ObjectResponse;
 import com.lardi.phonebook.dto.UserDTO;
 import com.lardi.phonebook.entity.User;
@@ -48,16 +49,17 @@ public class UserEndpoint {
                                        HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult);
+            return ResponseEntity.badRequest().body(new BaseResponse(bindingResult));
         }
 
         User user = conversionService.convert(userDTO, User.class);
         user = userService.create(user);
 
+        String password = userDTO.getPassword();
         userDTO = conversionService.convert(user, UserDTO.class);
 
         try {
-            request.login(userDTO.getLogin(), userDTO.getPassword());
+            request.login(userDTO.getLogin(), password);
         } catch (ServletException e) {
             LOGGER.error("error while login: " + e.getLocalizedMessage());
         }

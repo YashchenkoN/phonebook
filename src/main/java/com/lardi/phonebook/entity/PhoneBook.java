@@ -1,14 +1,26 @@
 package com.lardi.phonebook.entity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Nikolay Yashchenko
  */
+@Entity
+@Table(name = "phone_book")
 public class PhoneBook {
+
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true)
     private User owner;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "phone_book_id")
     private List<PhoneBookRecord> phoneBookRecords;
 
     public PhoneBook() {

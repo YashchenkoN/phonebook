@@ -5,15 +5,17 @@ import com.lardi.phonebook.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
  * @author Nikolay Yashchenko
  */
+@com.lardi.phonebook.common.File
+@Repository
 public class FileUserDao implements UserDao, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUserDao.class);
@@ -21,13 +23,13 @@ public class FileUserDao implements UserDao, DisposableBean {
     private RandomAccessFile file;
     private Long maxId;
 
-    public FileUserDao(String fileName) {
+    public FileUserDao() {
         try {
-            File f = new File(fileName);
+            File f = new File("users.csv");
             if (f.exists()) {
                 f.delete();
             }
-            file = new RandomAccessFile(fileName, "rw");
+            file = new RandomAccessFile("users.csv", "rw");
             maxId = file.length() / UserRecord.SIZE;
         } catch (IOException e) {
             LOGGER.error(e.getLocalizedMessage());

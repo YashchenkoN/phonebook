@@ -14,4 +14,14 @@ public class HomeController {
     public String getHome() {
         return "home";
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String getLogin() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String getRegistration() {
+        return "registration";
+    }
 }

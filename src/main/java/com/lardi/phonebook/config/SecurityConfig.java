@@ -1,5 +1,6 @@
 package com.lardi.phonebook.config;
 
+import com.lardi.phonebook.common.PhoneBookAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+
 /**
- * Created by Arsenii on 25.03.2016.
+ * @author Nikolay Yashchenko.
  */
 @Configuration
 @EnableWebSecurity
@@ -42,21 +44,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/resources/**", "/login").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/", "/favicon.ico", "/resources/**", "/login", "/api/user/**", "/auth").permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .failureUrl("/login?error=1")
-                .loginProcessingUrl("/auth")
-                .usernameParameter("login")
-                .passwordParameter("password")
+                .loginPage("/login").permitAll()
+                .failureUrl("/login-error")
+                .loginProcessingUrl("/auth").usernameParameter("login").passwordParameter("password")
+                .successHandler(new PhoneBookAuthSuccessHandler())
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .csrf().disable();
     }
 
     @Bean(name = "authenticationManager")

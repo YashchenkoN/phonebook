@@ -18,8 +18,7 @@ import static org.junit.Assert.assertNotNull;
 		ApplicationConfig.class,
 		TestDBConfig.class,
 		SecurityConfig.class,
-		WebAppInitializer.class,
-		WebMvcConfig.class
+		WebAppInitializer.class
 })
 public class PhoneBookApplicationTestConfig {
 

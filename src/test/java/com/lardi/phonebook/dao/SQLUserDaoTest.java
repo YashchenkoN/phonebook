@@ -4,7 +4,7 @@ import com.lardi.phonebook.config.PhoneBookApplicationTestConfig;
 import com.lardi.phonebook.entity.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,10 +18,10 @@ import static org.junit.Assert.assertThat;
 public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
 
     @Autowired
-    @Qualifier("sqlUserDao")
     private UserDao userDao;
 
     @Test
+    @Transactional
     public void testCreate() {
         User user = new User();
         user.setName("Name");
@@ -38,6 +38,7 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
     }
 
     @Test
+    @Transactional
     public void testRead() {
         User user = userDao.read(0L);
         assertThat(user, notNullValue());
@@ -48,6 +49,7 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
     }
 
     @Test
+    @Transactional
     public void testUpdate() {
         User user = userDao.read(0L);
         assertThat(user, notNullValue());
@@ -68,12 +70,14 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
     }
 
     @Test
+    @Transactional
     public void testReadByLogin() {
         User user = userDao.read("read_by_login");
         assertThat(user.getLogin(), equalTo("read_by_login"));
     }
 
     @Test
+    @Transactional
     public void testDelete() {
         User user = userDao.read(2L);
         assertThat(user.getLogin(), equalTo("delete"));

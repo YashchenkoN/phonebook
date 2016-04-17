@@ -1,12 +1,18 @@
 package com.lardi.phonebook.dao;
 
+import com.lardi.phonebook.common.MySQL;
 import com.lardi.phonebook.entity.PhoneBook;
 import com.lardi.phonebook.entity.Role;
 import com.lardi.phonebook.entity.User;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,65 +20,39 @@ import java.util.Map;
 /**
  * @author Nikolay Yashchenko
  */
+@MySQL
+@Repository
 public class SQLPhoneBookDao implements PhoneBookDao {
 
-    private JdbcTemplate jdbcTemplate;
-
-    private ResultSetExtractor<PhoneBook> readExtractor = rs -> {
-        if (rs.next()) {
-            PhoneBook phoneBook = new PhoneBook();
-            phoneBook.setId(rs.getLong("p.id"));
-
-            User user = new User();
-            user.setId(rs.getLong("u.id"));
-            user.setName(rs.getString("u.name"));
-            user.setLogin(rs.getString("u.login"));
-            user.setPassword(rs.getString("u.password"));
-            user.setRole(Role.valueOf(rs.getString("u.role")));
-            phoneBook.setOwner(user);
-
-            return phoneBook;
-        }
-        return null;
-    };
-
-    public SQLPhoneBookDao(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public PhoneBook create(PhoneBook phoneBook) {
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("phone_book")
-                .usingGeneratedKeyColumns("id");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("user_id", phoneBook.getOwner().getId());
-        Number key = simpleJdbcInsert.executeAndReturnKey(parameters);
-
-        phoneBook.setId(key.longValue());
-
+        entityManager.persist(phoneBook);
         return phoneBook;
     }
 
     @Override
     public PhoneBook read(Long id) {
-        String sql = "SELECT * FROM phone_book p JOIN users ON p.user_id = u.id where p.id = ?";
-        return jdbcTemplate.query(sql, new Object[] { id }, readExtractor);
+        return entityManager.find(PhoneBook.class, id);
     }
 
     @Override
     public PhoneBook getByUserId(Long userId) {
-        String sql = "SELECT * FROM phone_book p JOIN";
-        return null;
+        return (PhoneBook) entityManager.unwrap(Session.class).createCriteria(PhoneBook.class)
+                .createAlias("owner", "o")
+                .add(Restrictions.eq("o.id", userId))
+                .uniqueResult();
     }
 
     @Override
     public PhoneBook update(PhoneBook phoneBook) {
-        return null;
+        return entityManager.merge(phoneBook);
     }
 
     @Override
     public void delete(PhoneBook phoneBook) {
-
+        entityManager.remove(phoneBook);
     }
 }
