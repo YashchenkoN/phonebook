@@ -1,40 +1,17 @@
-package com.lardi.phonebook.entity;
-
-import javax.persistence.*;
+package com.lardi.phonebook.dto;
 
 /**
  * @author Nikolay Yashchenko
  */
-@Entity
-@Table(name = "phone_book_record")
-public class PhoneBookRecord {
-
-    @Id
-    @GeneratedValue
+public class PhoneBookRecordDTO {
     private Long id;
-
-    @ManyToOne(optional = false)
-    private User user;
-
-    @Column(name = "last_name", nullable = false)
+    private Long userId;
     private String lastName;
-
-    @Column(name = "first_name", nullable = false)
     private String firstName;
-
-    @Column(name = "patronymic", nullable = false)
     private String patronymic;
-
-    @Column(name = "mobile_phone", nullable = false)
     private String mobilePhone;
-
-    @Column(name = "home_phone")
     private String homePhone;
-
-    @Column(name = "address")
     private String address;
-
-    @Column(name = "email")
     private String email;
 
     public Long getId() {
@@ -45,12 +22,12 @@ public class PhoneBookRecord {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getLastName() {

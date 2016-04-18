@@ -73,6 +73,11 @@ public class FileUserDao implements UserDao, DisposableBean {
     }
 
     @Override
+    public Long getId(String login) {
+        return null;
+    }
+
+    @Override
     public User update(User user) {
         if (read(user.getId()) != null) {
             try {

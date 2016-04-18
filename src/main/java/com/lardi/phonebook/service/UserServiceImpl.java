@@ -40,6 +40,12 @@ public class UserServiceImpl implements UserService {
         return userDao.read(login);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Long getId(String login) {
+        return null;
+    }
+
     @Transactional
     @Override
     public User update(User user) {

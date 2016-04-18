@@ -1,5 +1,6 @@
 package com.lardi.phonebook.converter;
 
+import com.lardi.phonebook.service.PhoneBookRecordService;
 import com.lardi.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -22,9 +23,14 @@ public class PhoneBookConversionService extends ConversionServiceFactoryBean {
     @Lazy
     private UserService userService;
 
+    @Autowired
+    @Lazy
+    private PhoneBookRecordService phoneBookRecordService;
+
     public PhoneBookConversionService() {
         Set<Converter> converters = new HashSet<>();
         converters.add(new UserEntityToDTOConverter());
+        converters.add(new PhoneBookRecordEntityToDTOConverter());
         setConverters(converters);
     }
 
@@ -34,5 +40,6 @@ public class PhoneBookConversionService extends ConversionServiceFactoryBean {
         ConversionService conversionService = getObject();
         ConverterRegistry registry = (ConverterRegistry) conversionService;
         registry.addConverter(new UserDTOToEntityConverter(userService));
+        registry.addConverter(new PhoneBookRecordDTOToEntityConverter(userService, phoneBookRecordService));
     }
 }

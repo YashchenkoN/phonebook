@@ -3,6 +3,7 @@ package com.lardi.phonebook.dao;
 import com.lardi.phonebook.common.MySQL;
 import com.lardi.phonebook.entity.User;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,14 @@ public class SQLUserDao implements UserDao {
     public User read(String login) {
         return (User) entityManager.unwrap(Session.class).createCriteria(User.class)
                 .add(Restrictions.eq("login", login))
+                .uniqueResult();
+    }
+
+    @Override
+    public Long getId(String login) {
+        return (Long) entityManager.unwrap(Session.class).createCriteria(User.class)
+                .add(Restrictions.eq("login", login))
+                .setProjection(Projections.property("id"))
                 .uniqueResult();
     }
 
