@@ -1,5 +1,6 @@
 package com.lardi.phonebook.config;
 
+import com.lardi.phonebook.common.PhoneBookAuthFailureHandler;
 import com.lardi.phonebook.common.PhoneBookAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login-error")
                 .loginProcessingUrl("/auth").usernameParameter("login").passwordParameter("password")
                 .successHandler(new PhoneBookAuthSuccessHandler())
+                .failureHandler(new PhoneBookAuthFailureHandler())
                 .and()
                 .logout()
                 .logoutUrl("/logout")
