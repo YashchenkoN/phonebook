@@ -1,8 +1,6 @@
 package com.lardi.phonebook.web.rest;
 
 import com.lardi.phonebook.dto.BaseResponse;
-import com.lardi.phonebook.dto.ObjectListResponse;
-import com.lardi.phonebook.dto.ObjectResponse;
 import com.lardi.phonebook.dto.PhoneBookRecordDTO;
 import com.lardi.phonebook.entity.PhoneBookRecord;
 import com.lardi.phonebook.service.AuthenticationHelperService;
@@ -79,7 +77,7 @@ public class PhoneBookRecordEndpoint {
                 .map(p -> conversionService.convert(p, PhoneBookRecordDTO.class))
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new ObjectListResponse<>(result));
+        return ResponseEntity.ok(result.toArray());
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
@@ -97,7 +95,7 @@ public class PhoneBookRecordEndpoint {
 
         phoneBookRecordDTO = conversionService.convert(phoneBookRecord, PhoneBookRecordDTO.class);
 
-        return ResponseEntity.ok(new ObjectResponse<>(phoneBookRecordDTO));
+        return ResponseEntity.ok(phoneBookRecordDTO);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE,
@@ -114,7 +112,7 @@ public class PhoneBookRecordEndpoint {
         PhoneBookRecord phoneBookRecord = conversionService.convert(phoneBookRecordDTO, PhoneBookRecord.class);
         phoneBookRecord = phoneBookRecordService.create(phoneBookRecord);
 
-        return ResponseEntity.ok(new ObjectResponse<>(conversionService.convert(phoneBookRecord, PhoneBookRecordDTO.class)));
+        return ResponseEntity.ok(conversionService.convert(phoneBookRecord, PhoneBookRecordDTO.class));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

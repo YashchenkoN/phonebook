@@ -19,7 +19,7 @@ function showRecords(firstName, lastName, phone) {
                 inserting: true,
                 editing: true,
                 //paging: true
-                data: data.objects,
+                data: data,
                 fields: [
                     {name : "id", type : "number", editing : false},
                     {name : "firstName", type : "text", validate : "required"},
@@ -42,7 +42,7 @@ function showRecords(firstName, lastName, phone) {
                         item.id = null;
                         item.userId = window.userId;
                         console.log('INSERT', item);
-                        $.ajax({
+                        return $.ajax({
                             url: '/api/record/',
                             contentType: 'application/json',
                             dataType: 'json',
@@ -50,7 +50,6 @@ function showRecords(firstName, lastName, phone) {
                             data: JSON.stringify(item),
                             success: function(data) {
                                 console.log('INSERT RESPONSE', data);
-                                return data.object;
                             }
                         });
                     },
@@ -58,7 +57,7 @@ function showRecords(firstName, lastName, phone) {
                     updateItem: function(item) {
                         item.userId = window.userId;
                         console.log('UPDATE', item);
-                        $.ajax({
+                        return $.ajax({
                             url: '/api/record/' + item.id,
                             contentType: 'application/json',
                             dataType: 'json',
@@ -66,7 +65,6 @@ function showRecords(firstName, lastName, phone) {
                             data: JSON.stringify(item),
                             success: function(data) {
                                 console.log('UPDATE RESPONSE', data);
-                                return data.object;
                             }
                         });
                     },
@@ -81,9 +79,9 @@ function showRecords(firstName, lastName, phone) {
                             type: 'DELETE',
                             success: function(data) {
                                 console.log('DELETE RESPONSE', data);
-                                return data;
                             }
                         });
+                        return item;
                     }
                 }
 

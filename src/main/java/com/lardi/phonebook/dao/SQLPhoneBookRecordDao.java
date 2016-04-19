@@ -63,7 +63,7 @@ public class SQLPhoneBookRecordDao implements PhoneBookRecordDao {
                 .add(
                         Restrictions.and(
                                 Restrictions.eq("u.id", userId),
-                                Restrictions.ilike("firstName", firstName)
+                                Restrictions.ilike("firstName", "%" + firstName + "%")
                         )
                 )
                 .list();
@@ -77,7 +77,7 @@ public class SQLPhoneBookRecordDao implements PhoneBookRecordDao {
                 .add(
                         Restrictions.and(
                                 Restrictions.eq("u.id", userId),
-                                Restrictions.ilike("lastName", lastName)
+                                Restrictions.ilike("lastName", "%" + lastName + "%")
                         )
                 )
                 .list();
@@ -91,7 +91,7 @@ public class SQLPhoneBookRecordDao implements PhoneBookRecordDao {
                 .add(
                         Restrictions.and(
                                 Restrictions.eq("u.id", userId),
-                                Restrictions.ilike("mobilePhone", phone)
+                                Restrictions.ilike("mobilePhone", "%" + phone + "%")
                         )
                 )
                 .list();
