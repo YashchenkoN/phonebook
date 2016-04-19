@@ -31,7 +31,7 @@ $(function() {
                 password: $('#password').val()
             }),
             success: function(data) {
-                var response = JSON.stringify(data);
+                var response = JSON.parse(data);
                 console.log(response);
                 if (response.erorrs.length == 0) {
                     window.location = '/';
@@ -52,7 +52,7 @@ $(function() {
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function(data) {
-                var response = JSON.stringify(data);
+                var response = JSON.parse(data);
                 console.log(response);
                 if (response.success) {
                     window.location = '/';

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
  * @author Nikolay Yashchenko
  */
 @RestController
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/api/record")
 public class PhoneBookRecordEndpoint {
 
@@ -59,12 +61,7 @@ public class PhoneBookRecordEndpoint {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAll(@RequestParam(value = "firstname", required = false) String firstName,
                                  @RequestParam(value = "lastname", required = false) String lastName,
-                                 @RequestParam(value = "phone", required = false) String phone,
-                                 BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new BaseResponse(bindingResult));
-        }
+                                 @RequestParam(value = "phone", required = false) String phone) {
 
         Long userId = authenticationHelperService.getLoggedInUserId();
 
