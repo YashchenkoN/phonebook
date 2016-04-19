@@ -3,7 +3,6 @@ package com.lardi.phonebook.converter;
 import com.lardi.phonebook.service.PhoneBookRecordService;
 import com.lardi.phonebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
@@ -16,15 +15,13 @@ import java.util.Set;
 /**
  * @author Nikolay Yashchenko
  */
-@Service("conversionService")
+@Service("myConversionService")
 public class PhoneBookConversionService extends ConversionServiceFactoryBean {
 
     @Autowired
-    @Lazy
     private UserService userService;
 
     @Autowired
-    @Lazy
     private PhoneBookRecordService phoneBookRecordService;
 
     public PhoneBookConversionService() {

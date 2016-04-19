@@ -1,0 +1,4 @@
+insert into users (id, login, name, password, role) VALUES (1, 'vkont4@gmail.com',	'Nikolay Yashchenko', '75725c64e0212a958408c46224f5c78bfaa5179f9a8a2afc82ffba473f985d5787be01983c470caa', 'ROLE_USER')
+insert into phone_book_record (id, user_id, last_name, first_name, patronymic, mobile_phone) values (1, 1, 'Yashchenko', 'Nikolay', 'Sergeevich', '+380(66)3277267');
+insert into phone_book_record (id, user_id, last_name, first_name, patronymic, mobile_phone) values (2, 1, 'Sindeckaya', 'Viktoria', 'Igorivna', '+380(95)3187160');
+insert into phone_book_record (id, user_id, last_name, first_name, patronymic, mobile_phone) values (3, 1, 'Shvets', 'Yurii', 'Igorovich', '+380(66)3277268');

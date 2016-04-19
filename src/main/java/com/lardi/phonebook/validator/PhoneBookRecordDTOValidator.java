@@ -1,6 +1,8 @@
 package com.lardi.phonebook.validator;
 
 import com.lardi.phonebook.dto.PhoneBookRecordDTO;
+import com.lardi.phonebook.service.PhoneBookRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -14,6 +16,9 @@ public class PhoneBookRecordDTOValidator implements Validator {
     private final String UKRAINE_NUMBER_MATCHER = "\\+\\d{3}\\(\\d{2}\\)\\d{7}";
     private final String EMAIL_MATCHER = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+    @Autowired
+    private PhoneBookRecordService phoneBookRecordService;
 
     @Override
     public boolean supports(Class<?> clazz) {

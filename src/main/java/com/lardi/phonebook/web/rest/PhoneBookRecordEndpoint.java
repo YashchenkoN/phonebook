@@ -14,12 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,9 +41,14 @@ public class PhoneBookRecordEndpoint {
     private Validator idValidator;
 
     @Autowired
+    @Qualifier("phoneBookMobilePhoneInDBValidator")
+    private Validator phoneBookIdValidator;
+
+    @Autowired
     private PhoneBookRecordService phoneBookRecordService;
 
     @Autowired
+    @Qualifier("myConversionService")
     private ConversionService conversionService;
 
     @Autowired
@@ -65,9 +71,9 @@ public class PhoneBookRecordEndpoint {
 
         Long userId = authenticationHelperService.getLoggedInUserId();
 
-        List<PhoneBookRecord> phoneBookRecordList = firstName != null ? phoneBookRecordService.getByFirstName(firstName, userId) :
-                lastName != null ? phoneBookRecordService.getByLastName(lastName, userId) :
-                        phone != null ? phoneBookRecordService.getByPhone(phone, userId) : new ArrayList<>();
+        List<PhoneBookRecord> phoneBookRecordList = firstName != null && !firstName.isEmpty() ? phoneBookRecordService.getByFirstName(firstName, userId) :
+                lastName != null && !lastName.isEmpty() ? phoneBookRecordService.getByLastName(lastName, userId) :
+                        phone != null && !phone.isEmpty() ? phoneBookRecordService.getByPhone(phone, userId) : phoneBookRecordService.getByUserId(userId);
 
         List<PhoneBookRecordDTO> result = phoneBookRecordList.stream()
                 .map(p -> conversionService.convert(p, PhoneBookRecordDTO.class))
@@ -81,6 +87,7 @@ public class PhoneBookRecordEndpoint {
     public ResponseEntity create(@Validated @RequestBody PhoneBookRecordDTO phoneBookRecordDTO,
                                  BindingResult bindingResult) {
 
+        phoneBookIdValidator.validate(phoneBookRecordDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new BaseResponse(bindingResult));
         }
@@ -111,7 +118,9 @@ public class PhoneBookRecordEndpoint {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@Validated @PathVariable("id") Long id, BindingResult bindingResult) {
+    public ResponseEntity delete(@PathVariable("id") Long id) {
+        BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "id");
+        idValidator.validate(id, bindingResult);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new BaseResponse(bindingResult));
         }

@@ -1,6 +1,7 @@
 package com.lardi.phonebook.config;
 
 import com.lardi.phonebook.common.MySQL;
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +58,8 @@ public class DBConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "create-drop");
+        jpaProperties.put(Environment.HBM2DDL_IMPORT_FILES, "/sql/import.sql");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

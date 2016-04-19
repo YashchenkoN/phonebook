@@ -30,6 +30,13 @@ public class SQLPhoneBookRecordDao implements PhoneBookRecordDao {
     }
 
     @Override
+    public PhoneBookRecord read(String mobilePhone) {
+        return (PhoneBookRecord) entityManager.unwrap(Session.class).createCriteria(PhoneBookRecord.class)
+                .add(Restrictions.eq("mobilePhone", mobilePhone))
+                .uniqueResult();
+    }
+
+    @Override
     public PhoneBookRecord update(PhoneBookRecord phoneBookRecord) {
         return entityManager.merge(phoneBookRecord);
     }

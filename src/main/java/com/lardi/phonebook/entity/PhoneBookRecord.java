@@ -25,7 +25,7 @@ public class PhoneBookRecord {
     @Column(name = "patronymic", nullable = false)
     private String patronymic;
 
-    @Column(name = "mobile_phone", nullable = false)
+    @Column(name = "mobile_phone", nullable = false, unique = true)
     private String mobilePhone;
 
     @Column(name = "home_phone")

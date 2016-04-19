@@ -10,6 +10,7 @@ import java.util.List;
 public interface PhoneBookRecordService {
     PhoneBookRecord create(PhoneBookRecord phoneBookRecord);
     PhoneBookRecord read(Long id);
+    PhoneBookRecord read(String mobilePhone);
     PhoneBookRecord update(PhoneBookRecord phoneBookRecord);
     void delete(PhoneBookRecord phoneBookRecord);
     void delete(Long id);

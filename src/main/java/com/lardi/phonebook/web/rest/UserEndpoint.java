@@ -33,6 +33,7 @@ public class UserEndpoint {
     private UserService userService;
 
     @Autowired
+    @Qualifier("myConversionService")
     private ConversionService conversionService;
 
     @Autowired

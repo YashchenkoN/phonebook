@@ -29,6 +29,12 @@ public class PhoneBookRecordServiceImpl implements PhoneBookRecordService {
         return phoneBookRecordDao.read(id);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public PhoneBookRecord read(String mobilePhone) {
+        return phoneBookRecordDao.read(mobilePhone);
+    }
+
     @Transactional
     @Override
     public PhoneBookRecord update(PhoneBookRecord phoneBookRecord) {
@@ -44,7 +50,10 @@ public class PhoneBookRecordServiceImpl implements PhoneBookRecordService {
     @Transactional
     @Override
     public void delete(Long id) {
-        delete(read(id));
+        PhoneBookRecord phoneBookRecord = read(id);
+        if (phoneBookRecord != null) {
+            delete(phoneBookRecord);
+        }
     }
 
     @Transactional(readOnly = true)

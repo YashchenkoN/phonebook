@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Long getId(String login) {
-        return null;
+        return userDao.getId(login);
     }
 
     @Transactional

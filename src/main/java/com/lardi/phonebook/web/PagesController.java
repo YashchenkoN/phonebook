@@ -2,6 +2,7 @@ package com.lardi.phonebook.web;
 
 import com.lardi.phonebook.service.AuthenticationHelperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class PagesController {
         return "authorization";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/phonebook", method = RequestMethod.GET)
     public String getPhoneBook(Model model) {
         Long currentUserId = authenticationHelperService.getLoggedInUserId();
@@ -33,6 +35,7 @@ public class PagesController {
         return "phonebook";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/phonebook/edit", method = RequestMethod.GET)
     public String getPhoneBookEdit(Model model) {
         Long currentUserId = authenticationHelperService.getLoggedInUserId();

@@ -2,10 +2,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="/fragment/head :: head('Edit Phone Book')"/>
+    <link th:href="@{/css/jsgrid.min.css}" rel="stylesheet">
+    <link th:href="@{/css/jsgrid-theme.min.css}" rel="stylesheet">
+    <script th:src="@{/js/jsgrid.min.js}"></script>
+    <script th:src="@{/js/phonebook-edit.js}"></script>
+
+    <script th:inline="javascript">
+        window.userId = /*[[${userId}]]*/ '';
+    </script>
 </head>
 <body>
     <div id="wrapper">
         <th:block th:replace="/fragment/sidebar :: sidebar"/>
+
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="records" style="width:100%">
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Patronymic</th>
+                                <th>Mobile</th>
+                                <th>Home</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
