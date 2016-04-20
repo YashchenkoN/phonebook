@@ -1,9 +1,13 @@
-package com.lardi.phonebook.dao;
+package com.lardi.phonebook.service;
 
-import com.lardi.phonebook.config.PhoneBookApplicationTestConfig;
+import com.lardi.phonebook.config.*;
 import com.lardi.phonebook.entity.User;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -15,10 +19,15 @@ import static org.junit.Assert.assertThat;
 /**
  * @author Nikolay Yashchenko
  */
-public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {ApplicationConfig.class, TestDBConfig.class})
+public class UserServiceTest {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @Transactional
@@ -28,19 +37,18 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
         user.setPassword("11111111");
         user.setLogin("login1");
 
-        user = userDao.create(user);
+        user = userService.create(user);
         assertNotNull(user);
         assertNotNull(user.getId());
 
         assertThat(user.getLogin(), equalTo("login1"));
         assertThat(user.getName(), equalTo("Name"));
-        assertThat(user.getPassword(), equalTo("11111111"));
     }
 
     @Test
     @Transactional
     public void testRead() {
-        User user = userDao.read(0L);
+        User user = userService.read(0L);
         assertThat(user, notNullValue());
         assertThat(user.getId(), equalTo(0L));
         assertThat(user.getName(), equalTo("name"));
@@ -51,7 +59,7 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
     @Test
     @Transactional
     public void testUpdate() {
-        User user = userDao.read(0L);
+        User user = userService.read(0L);
         assertThat(user, notNullValue());
         assertThat(user.getId(), equalTo(0L));
         assertThat(user.getName(), equalTo("name"));
@@ -59,8 +67,8 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
         assertThat(user.getPassword(), equalTo("1111"));
 
         user.setLogin("login2");
-        userDao.update(user);
-        user = userDao.read(0L);
+        userService.update(user);
+        user = userService.read(0L);
 
         assertThat(user, notNullValue());
         assertThat(user.getId(), equalTo(0L));
@@ -72,18 +80,18 @@ public class SQLUserDaoTest extends PhoneBookApplicationTestConfig {
     @Test
     @Transactional
     public void testReadByLogin() {
-        User user = userDao.read("read_by_login");
+        User user = userService.read("read_by_login");
         assertThat(user.getLogin(), equalTo("read_by_login"));
     }
 
     @Test
     @Transactional
     public void testDelete() {
-        User user = userDao.read(2L);
+        User user = userService.read(2L);
         assertThat(user.getLogin(), equalTo("delete"));
 
-        userDao.delete(user);
-        user = userDao.read(2L);
+        userService.delete(user);
+        user = userService.read(2L);
         assertThat(user, nullValue());
     }
 }

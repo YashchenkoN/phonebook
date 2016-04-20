@@ -1,5 +1,6 @@
 package com.lardi.phonebook.dao;
 
+import com.lardi.phonebook.common.Default;
 import com.lardi.phonebook.common.MySQL;
 import com.lardi.phonebook.entity.User;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Repository
 @MySQL
+@Default
 public class SQLUserDao implements UserDao {
 
     @PersistenceContext

@@ -1,7 +1,6 @@
 /**
  * Created by kolyan on 19.04.16.
  */
-
 $.ajax({
     url: '/api/record/',
     type: 'GET',

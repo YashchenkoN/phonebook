@@ -1,5 +1,7 @@
 package com.lardi.phonebook.dao;
 
+import com.lardi.phonebook.common.Default;
+import com.lardi.phonebook.common.MySQL;
 import com.lardi.phonebook.entity.PhoneBookRecord;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -13,6 +15,8 @@ import java.util.List;
  * @author Nikolay Yashchenko
  */
 @Repository
+@MySQL
+@Default
 public class SQLPhoneBookRecordDao implements PhoneBookRecordDao {
 
     @PersistenceContext
