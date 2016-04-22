@@ -26,9 +26,6 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Test
     @Transactional
     public void testCreate() {
