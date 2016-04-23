@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<userWrapper>
+    <users>
+        <id>0</id>
+        <name>name</name>
+        <login>login</login>
+        <password>1111</password>
+    </users>
+    <users>
+        <id>1</id>
+        <name>Name</name>
+        <login>read_by_login</login>
+        <password>11111111</password>
+    </users>
+    <users>
+        <id>2</id>
+        <name>Name</name>
+        <login>delete</login>
+        <password>11111111</password>
+    </users>
+    <users>
+        <id>3</id>
+        <name>name</name>
+        <login>login</login>
+        <password>1111</password>
+    </users>
+</userWrapper>

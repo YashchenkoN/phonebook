@@ -1,15 +1,25 @@
 package com.lardi.phonebook.service;
 
 import com.lardi.phonebook.config.*;
+import com.lardi.phonebook.dao.UserDao;
+import com.lardi.phonebook.dao.XMLUserDao;
 import com.lardi.phonebook.entity.User;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -20,12 +30,19 @@ import static org.junit.Assert.assertThat;
 /**
  * @author Nikolay Yashchenko
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class, TestDBConfig.class})
-public class UserServiceTest {
+public class UserDaoTest {
 
-    @Autowired
-    private UserService userService;
+    private UserDao userService = new XMLUserDao();
+
+    @Before
+    public void before() {
+        new File("users.xml").delete();
+        try {
+            Files.copy(new File("users_test.xml").toPath(), new File("users.xml").toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     @Transactional
@@ -46,9 +63,9 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testRead() {
-        User user = userService.read(0L);
+        User user = userService.read(3L);
         assertThat(user, notNullValue());
-        assertThat(user.getId(), equalTo(0L));
+        assertThat(user.getId(), equalTo(3L));
         assertThat(user.getName(), equalTo("name"));
         assertThat(user.getLogin(), equalTo("login"));
         assertThat(user.getPassword(), equalTo("1111"));

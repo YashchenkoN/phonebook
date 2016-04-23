@@ -1,12 +1,17 @@
 package com.lardi.phonebook.entity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Nikolay Yashchenko
  */
 @Entity
 @Table(name = "users")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
     @Id
     @GeneratedValue
