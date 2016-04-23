@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Profile("default")
-public @interface Default {
+@Profile("mysql")
+public @interface MySQLProfile {
 }

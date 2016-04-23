@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Profile("file")
-public @interface File {
+@Profile("default")
+public @interface DefaultProfile {
 }

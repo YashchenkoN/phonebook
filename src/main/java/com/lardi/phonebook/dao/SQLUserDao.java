@@ -1,7 +1,7 @@
 package com.lardi.phonebook.dao;
 
-import com.lardi.phonebook.common.Default;
-import com.lardi.phonebook.common.MySQL;
+import com.lardi.phonebook.common.DefaultProfile;
+import com.lardi.phonebook.common.MySQLProfile;
 import com.lardi.phonebook.entity.User;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -15,8 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author Nikolay Yashchenko
  */
 @Repository
-@MySQL
-@Default
+@MySQLProfile
+@DefaultProfile
 public class SQLUserDao implements UserDao {
 
     @PersistenceContext

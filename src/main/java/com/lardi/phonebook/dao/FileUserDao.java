@@ -1,5 +1,6 @@
 package com.lardi.phonebook.dao;
 
+import com.lardi.phonebook.common.FileProfile;
 import com.lardi.phonebook.common.UserRecord;
 import com.lardi.phonebook.entity.User;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import java.io.RandomAccessFile;
 /**
  * @author Nikolay Yashchenko
  */
-@com.lardi.phonebook.common.File
+@FileProfile
 @Repository
 public class FileUserDao implements UserDao, DisposableBean {
 

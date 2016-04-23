@@ -1,6 +1,6 @@
 package com.lardi.phonebook.config;
 
-import com.lardi.phonebook.common.MySQL;
+import com.lardi.phonebook.common.MySQLProfile;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
-@MySQL
+@MySQLProfile
 public class DBConfig {
 
     @Value("${dataSource.driverClassName}")

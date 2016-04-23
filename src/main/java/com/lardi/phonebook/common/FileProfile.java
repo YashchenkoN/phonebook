@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Profile("mysql")
-public @interface MySQL {
+@Profile("file")
+public @interface FileProfile {
 }

@@ -1,7 +1,6 @@
 package com.lardi.phonebook.config;
 
 import com.lardi.phonebook.PhoneBookApplication;
-import com.lardi.phonebook.common.MySQL;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
