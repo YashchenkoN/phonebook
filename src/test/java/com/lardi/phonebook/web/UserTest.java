@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.lardi.phonebook.common.GsonHolder;
 import com.lardi.phonebook.config.ApplicationConfig;
 import com.lardi.phonebook.config.TestDBConfig;
-import com.lardi.phonebook.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +15,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
@@ -41,18 +39,17 @@ public class UserTest {
         mockMvc = webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
     }
 
-
-
     @Test
     public void login() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("Registration");
-        userDTO.setLogin("registration");
-        userDTO.setPassword("password");
 
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/auth")
                 .content(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("login", "vkont4@gmail.com").param("password", "111111112"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(jsonPath("$.success", equalTo(false)));
+
+        mockMvc.perform(post("/auth")
+                .content(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("login", "vkont4@gmail.com").param("password", "11111111"))
+                .andExpect(jsonPath("$.success", equalTo(true)));
     }
 }
