@@ -34,3 +34,14 @@ CREATE TABLE `phone_book_record` (
   CONSTRAINT `FK_ebh8qhgpxej7tpecohji4cvl2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 ```
+
+The application can use two different data bases: MySQL database and XML file database/
+for mysql db pass JVM argument
+```
+-Dspring.profiles.active=mysql
+```
+default profile - mysql
+for xml db pass JVM argument
+```
+-Dlardi.conf=/path/to/file.properties
+```
