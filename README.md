@@ -35,7 +35,7 @@ CREATE TABLE `phone_book_record` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 ```
 
-The application can use two different data bases: MySQL database and XML file database/
+The application can use two different data bases: MySQL database and XML file database <br/>
 for mysql db pass JVM argument
 ```
 -Dspring.profiles.active=mysql
