@@ -1,5 +1,6 @@
 package com.lardi.phonebook.config;
 
+import com.lardi.phonebook.common.DefaultProfile;
 import com.lardi.phonebook.common.MySQLProfile;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @MySQLProfile
+@DefaultProfile
 public class DBConfig {
 
     @Value("${dataSource.driverClassName}")
@@ -31,10 +33,6 @@ public class DBConfig {
     private String username;
     @Value("${dataSource.password}")
     private String password;
-    @Value("${db.type:sql}")
-    private String dbType;
-    @Value("${db.file.name}")
-    private String fileName;
 
     @Bean
     public DataSource dataSource() {

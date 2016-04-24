@@ -32,13 +32,13 @@ import static org.junit.Assert.assertThat;
  */
 public class UserDaoTest {
 
-    private UserDao userService = new XMLUserDao();
+    private UserDao userService = new XMLUserDao("users_test_orig.xml");
 
     @Before
     public void before() {
-        new File("users.xml").delete();
+        new File("users_test_orig.xml").delete();
         try {
-            Files.copy(new File("users_test.xml").toPath(), new File("users.xml").toPath());
+            Files.copy(new File("users_test.xml").toPath(), new File("users_test_orig.xml").toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }

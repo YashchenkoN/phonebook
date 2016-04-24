@@ -16,7 +16,6 @@ import org.springframework.transaction.TransactionStatus;
  */
 @Configuration
 @FileProfile
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class FileConfig {
 
     @Bean(name = "transactionManager")

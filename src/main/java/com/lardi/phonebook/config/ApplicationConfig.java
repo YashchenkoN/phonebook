@@ -1,6 +1,7 @@
 package com.lardi.phonebook.config;
 
 import com.lardi.phonebook.PhoneBookApplication;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,10 +18,10 @@ import org.springframework.core.io.ClassPathResource;
 public class ApplicationConfig {
 
     @Bean
-    public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer(@Value("#{systemProperties['lardi.conf']}") String properties) {
         PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
         ppc.setIgnoreUnresolvablePlaceholders(true);
-        ppc.setLocation(new ClassPathResource("application.properties"));
+        ppc.setLocation(new ClassPathResource(properties != null ? properties : "application.properties"));
         return ppc;
     }
 

@@ -31,19 +31,25 @@ public class XMLUserDao implements UserDao {
     private Long sequence = 0L;
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;
+    private String fileName;
 
     public XMLUserDao() {
+        this("users.xml");
+    }
+
+    public XMLUserDao(String fileName) {
+        this.fileName = fileName;
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(UserWrapper.class);
             marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             unmarshaller = jaxbContext.createUnmarshaller();
-            File file = new File("users.xml");
+            File file = new File(fileName);
             List<User> users = ((UserWrapper) unmarshaller.unmarshal(file)).getUsers();
             inMemoryCache = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
             sequence = users.stream().map(User::getId).max(Long::compareTo).orElse(0L);
         } catch (JAXBException e) {
-            LOGGER.error(e.getLocalizedMessage());
+            LOGGER.error(e.toString());
         }
     }
 
@@ -53,7 +59,7 @@ public class XMLUserDao implements UserDao {
         inMemoryCache.put(user.getId(), user);
 
         try {
-            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File("users.xml"));
+            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
             return null;
@@ -88,7 +94,7 @@ public class XMLUserDao implements UserDao {
         inMemoryCache.put(user.getId(), user);
 
         try {
-            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File("users.xml"));
+            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
             return null;
@@ -101,7 +107,7 @@ public class XMLUserDao implements UserDao {
     public void delete(User user) {
         inMemoryCache.remove(user.getId());
         try {
-            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File("users.xml"));
+            marshaller.marshal(new UserWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
         }

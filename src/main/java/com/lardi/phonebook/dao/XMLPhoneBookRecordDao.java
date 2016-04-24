@@ -31,14 +31,20 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
     private Long sequence = 0L;
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;
+    private String fileName;
 
     public XMLPhoneBookRecordDao() {
+        this("records.xml");
+    }
+
+    public XMLPhoneBookRecordDao(String fileName) {
+        this.fileName = fileName;
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(PhoneBookRecordWrapper.class);
             marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             unmarshaller = jaxbContext.createUnmarshaller();
-            File file = new File("records.xml");
+            File file = new File(fileName);
             List<PhoneBookRecord> records = ((PhoneBookRecordWrapper) unmarshaller.unmarshal(file)).getRecords();
             inMemoryCache = records.stream().collect(Collectors.toMap(PhoneBookRecord::getId, Function.identity()));
             sequence = records.stream().map(PhoneBookRecord::getId).max(Long::compareTo).orElse(0L);
@@ -53,7 +59,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
         inMemoryCache.put(phoneBookRecord.getId(), phoneBookRecord);
 
         try {
-            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File("records.xml"));
+            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
             return null;
@@ -83,7 +89,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
         inMemoryCache.put(phoneBookRecord.getId(), phoneBookRecord);
 
         try {
-            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File("records.xml"));
+            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
             return null;
@@ -96,7 +102,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
     public void delete(PhoneBookRecord phoneBookRecord) {
         inMemoryCache.remove(phoneBookRecord.getId());
         try {
-            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File("records.xml"));
+            marshaller.marshal(new PhoneBookRecordWrapper(inMemoryCache.values()), new File(fileName));
         } catch (JAXBException e) {
             LOGGER.error(e.toString());
         }
@@ -113,7 +119,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
     public List<PhoneBookRecord> getByFirstName(String firstName, Long userId) {
         return inMemoryCache.values().stream()
                 .filter(phoneBookRecord -> phoneBookRecord != null && phoneBookRecord.getUser().getId().equals(userId))
-                .filter(phoneBookRecord -> phoneBookRecord.getFirstName().equals(firstName))
+                .filter(phoneBookRecord -> phoneBookRecord.getFirstName().contains(firstName))
                 .collect(Collectors.toList());
     }
 
@@ -121,7 +127,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
     public List<PhoneBookRecord> getByLastName(String lastName, Long userId) {
         return inMemoryCache.values().stream()
                 .filter(phoneBookRecord -> phoneBookRecord != null && phoneBookRecord.getUser().getId().equals(userId))
-                .filter(phoneBookRecord -> phoneBookRecord.getLastName().equals(lastName))
+                .filter(phoneBookRecord -> phoneBookRecord.getLastName().contains(lastName))
                 .collect(Collectors.toList());
     }
 
@@ -129,7 +135,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
     public List<PhoneBookRecord> getByPhone(String phone, Long userId) {
         return inMemoryCache.values().stream()
                 .filter(phoneBookRecord -> phoneBookRecord != null && phoneBookRecord.getUser().getId().equals(userId))
-                .filter(phoneBookRecord -> phoneBookRecord.getMobilePhone().equals(phone))
+                .filter(phoneBookRecord -> phoneBookRecord.getMobilePhone().contains(phone))
                 .collect(Collectors.toList());
     }
 }

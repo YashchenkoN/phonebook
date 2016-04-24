@@ -1,5 +1,5 @@
 /**
- * Created by kolyan on 17.04.16.
+ * @author Nikolay Yashchenko
  */
 $(function() {
 
@@ -8,6 +8,7 @@ $(function() {
         $("#register-form").fadeOut(100);
         $('#register-form-link').removeClass('active');
         $(this).addClass('active');
+        $('#error-span').text('');
         e.preventDefault();
     });
 
@@ -16,6 +17,7 @@ $(function() {
         $("#login-form").fadeOut(100);
         $('#login-form-link').removeClass('active');
         $(this).addClass('active');
+        $('#error-span').text('');
         e.preventDefault();
     });
 
@@ -27,8 +29,8 @@ $(function() {
             type: 'POST',
             data: JSON.stringify({
                 name: $('#name').val(),
-                login: $('#login').val(),
-                password: $('#password').val()
+                login: $('#login-reg').val(),
+                password: $('#password-reg').val()
             }),
             success: function(data) {
                 var response = JSON.parse(data);
@@ -37,10 +39,12 @@ $(function() {
                     window.location = '/';
                 } else {
                     console.log('!!!!!!!!');
+                    $('#error-span').text('Error! Check inputs')
                 }
             },
             error: function(e) {
                 console.log(e);
+                $('#error-span').text('Error! Check inputs')
             }
         })
     });
@@ -58,40 +62,13 @@ $(function() {
                     window.location = '/';
                 } else {
                     console.log('!!!!!!!!');
+                    $('#error-span').text('Error! Check inputs')
                 }
             },
             error: function(e) {
                 console.log(e);
+                $('#error-span').text('Error! Check inputs')
             }
         })
-    });
-
-    $('#register-form').validate({
-        framework: 'bootstrap',
-        fields: {
-            login: {
-                validators: {
-                    notEmpty: {
-                        message: 'The username is required'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The username must be more than 6 and less than 30 characters long'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z]+$/,
-                        message: 'The username can only consist of alphabetical, number, dot and underscore'
-                    }
-                }
-            },
-            password: {
-                validators: {
-                    notEmpty: {
-                        message: 'The password is required'
-                    }
-                }
-            }
-        }
     });
 });
