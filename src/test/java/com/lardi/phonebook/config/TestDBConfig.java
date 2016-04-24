@@ -1,10 +1,8 @@
 package com.lardi.phonebook.config;
 
-import com.lardi.phonebook.PhoneBookApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -22,7 +20,6 @@ import static org.hibernate.cfg.AvailableSettings.*;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = PhoneBookApplication.class)
 public class TestDBConfig {
 
     @Bean
