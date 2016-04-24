@@ -61,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .logoutSuccessUrl("/")
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .exceptionHandling().accessDeniedPage("/");
     }
 
     @Bean(name = "authenticationManager")

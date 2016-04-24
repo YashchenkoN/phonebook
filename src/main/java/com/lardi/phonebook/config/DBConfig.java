@@ -54,8 +54,8 @@ public class DBConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "create-drop");
-        jpaProperties.put(Environment.HBM2DDL_IMPORT_FILES, "/sql/import.sql");
+        jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, "validate");
+//        jpaProperties.put(Environment.HBM2DDL_IMPORT_FILES, "/sql/import.sql");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

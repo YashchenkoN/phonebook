@@ -33,9 +33,9 @@ $(function() {
                 password: $('#password-reg').val()
             }),
             success: function(data) {
-                var response = JSON.parse(data);
+                var response = data;
                 console.log(response);
-                if (response.erorrs.length == 0) {
+                if (response.erorrs == null || response.errors.length == 0) {
                     window.location = '/';
                 } else {
                     console.log('!!!!!!!!');

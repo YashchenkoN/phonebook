@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
@@ -46,6 +47,7 @@ public class UserEndpoint {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     public ResponseEntity registration(@Validated @RequestBody UserDTO userDTO, BindingResult bindingResult,
                                        HttpServletRequest request) {
 

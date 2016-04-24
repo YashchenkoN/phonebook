@@ -22,6 +22,7 @@ public class PagesController {
         return "home";
     }
 
+    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     @RequestMapping(value = "/authorization", method = RequestMethod.GET)
     public String getRegistration() {
         return "authorization";
