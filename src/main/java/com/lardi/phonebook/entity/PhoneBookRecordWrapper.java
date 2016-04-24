@@ -15,6 +15,9 @@ import java.util.List;
 public class PhoneBookRecordWrapper {
     private List<PhoneBookRecord> records = new ArrayList<>();
 
+    public PhoneBookRecordWrapper() {
+    }
+
     public PhoneBookRecordWrapper(Collection<PhoneBookRecord> collection) {
         records.addAll(collection);
     }

@@ -34,7 +34,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
 
     public XMLPhoneBookRecordDao() {
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(PhoneBookRecord.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(PhoneBookRecordWrapper.class);
             marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             unmarshaller = jaxbContext.createUnmarshaller();
@@ -43,7 +43,7 @@ public class XMLPhoneBookRecordDao implements PhoneBookRecordDao {
             inMemoryCache = records.stream().collect(Collectors.toMap(PhoneBookRecord::getId, Function.identity()));
             sequence = records.stream().map(PhoneBookRecord::getId).max(Long::compareTo).orElse(0L);
         } catch (JAXBException e) {
-            LOGGER.error(e.getLocalizedMessage());
+            LOGGER.error(e.toString());
         }
     }
 
