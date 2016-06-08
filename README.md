@@ -1,7 +1,28 @@
-# phonebook
+# Phonebook
 
-Application need MySQL DB.
-Connect to localhost server:
+My small project
+
+## Features:
+- authorization/registration
+- phone book viewing with filtering by name, surname and phone number
+- adding, editing and deleting of phone numbers
+- each user have own phone book
+- anonymous user cannot see phone book pages
+- number validation for Ukraine
+- dynamic behaviour
+
+
+## Technologies
+- Maven
+- Spring Boot
+- HTML/CSS
+- JS/jQuery
+- MySQL
+- Hibernate
+
+## Deployment
+Application needs MySQL DB. Before using the application you need to create tables by following the commands below.
+Do connecting to MySQL server and enter next statements:
 ``` mysql
 mysql -u root -p
 and enter next commands
@@ -44,4 +65,9 @@ default profile - mysql
 for xml db pass JVM argument
 ```
 -Dlardi.conf=/path/to/file.properties
+```
+
+To running application, please, enter:
+```
+mvn spring-boot:run
 ```
